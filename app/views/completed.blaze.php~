@@ -1,0 +1,81 @@
+@extends('layouts.default')
+@section('jquery')
+	<script>
+			$(document).ready(function(){
+				$('table#tasks').on('click','.delete',function() {
+					var button = this;
+					$.ajax({
+						url: 'tasks/'+this.parentNode.parentNode.id,
+						type: 'DELETE',
+						success: function(result) {
+							$(button.parentNode.parentNode).remove();
+							}
+						});
+					});
+
+
+				$('table#tasks').on('click','.archive',function() {
+					var button = this;
+					var dataString = 'a=1'; 
+
+					$.ajax({
+						url: 'tasks/'+this.parentNode.parentNode.id,
+						type: 'PUT',
+						data: dataString,
+						success: function(result) {
+							$(button.parentNode.parentNode).remove();
+							}
+						});
+					});
+
+
+			});
+	</script>
+@stop
+
+@section('content')
+	<div>
+		<p>Hi, {{ Auth::user()->given_name }}</p>
+	</div>
+	<div>
+		{{ Form::open(['route' => 'tasks.index','method'=>'GET','id' => 'search']) }}
+			<span>
+				{{ Form::label('q','Search') }}
+				{{ Form::text('q') }}
+			</span>
+	
+			<span>{{ Form::submit('Search') }}</span>
+		{{ Form::close() }}
+
+	</div>
+	<div>
+		<table id="tasks">
+			<tr>
+			{{ Form::open(['route' => 'tasks.store','id' => 'new-task']) }}
+				<td>
+					{{ Form::label('task','Task') }}
+					{{ Form::text('task') }}
+				</td>
+				<td>
+					{{ Form::label('priority','Priority') }}
+					{{ Form::select('priority', array('Low' => 'Low', 'Medium' => 'Medium', 'High' => 'High'), 'Medium') }}
+				</td>
+		
+				<td>{{ Form::submit('Save') }}</td>
+			{{ Form::close() }}
+			</tr>
+		@if($tasks->count())
+			@foreach($tasks as $task)
+				@if($task->completed == '0')
+				<tr class="task" id="{{ $task->id }}" ><td class="editable"><a href="tasks/{{ $task->id }}">{{ $task->task }}</a></td><td>{{ $task->priority }}</td><button class="delete">Delete</button></td><td><button class="archive">Archive</button></td></tr>
+				@endif
+			@endforeach
+
+		@else
+			<p>You do not have any task currently. Why not create a new task?</p>
+		@endif
+
+		</table>
+	</div>
+	<div><a href="archives">Archives</a></div>
+@stop

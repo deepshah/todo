@@ -1,0 +1,48 @@
+<?php
+    $content = "
+<page>
+	<div>
+		<h1>Pending Tasks</h1>
+			<table>
+			@if($pending_tasks->count())
+				@foreach($pending_tasks as $task)
+					<tr><td>{{ $task->task }}</a></td><td>{{ $task->priority }}</td></tr>
+				@endforeach
+			@else
+				<p>You do not have any pending task currently.</p>
+			@endif
+			</table>
+	</div>
+	<div>
+		<h1>Completed Tasks</h1>
+			<table>
+			@if($completed_tasks->count())
+				@foreach($completed_tasks as $task)
+					<tr><td>{{ $task->task }}</a></td><td>{{ $task->priority }}</td></tr>
+				@endforeach
+			@else
+				<p>You have not completed any task.</p>
+			@endif
+			</table>
+	</div>
+	<div>
+		<h1>Archived Tasks</h1>
+			<table>
+			@if($archived_tasks->count())
+				@foreach($archived_tasks as $task)
+					<tr><td>{{ $task->task }}</a></td><td>{{ $task->priority }}</td></tr>
+				@endforeach
+			@else
+				<p>You do not have any archived task currently.</p>
+			@endif
+			</table>
+	</div>
+</page>";
+
+    require_once(dirname(__FILE__).'/html2pdf/html2pdf.class.php');
+    $html2pdf = new HTML2PDF('P','A4','fr');
+    $html2pdf->WriteHTML($content);
+    $html2pdf->Output('exemple.pdf');
+?>
+
+

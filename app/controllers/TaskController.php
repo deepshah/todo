@@ -1,0 +1,161 @@
+<?php
+
+class TaskController extends \BaseController {
+
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function index()
+	{
+		if(Request::get('q'))
+		{
+			$tasks = Task::where('user_id', Auth::user()->id)->whereRaw("task like '%".Request::get('q')."%'")->get();
+			return Response::json(array(
+				'error' => false,
+				'tasks' => $tasks),
+				200
+				);
+
+		}
+		else if(Request::get('c') == 'true')
+		{
+			$tasks = Task::where('user_id', Auth::user()->id)->where('completed','1')->get();
+			return View::make('completed',['tasks' => $tasks]);
+		}
+		else if(Request::get('pdf') == 'true')
+		{
+			$completed_tasks = Task::where('user_id', Auth::user()->id)->where('completed','1')->get();
+			$archived_tasks = Task::where('user_id', Auth::user()->id)->where('archive','1')->get();
+			$pending_tasks = Task::where('user_id', Auth::user()->id)->where('completed','0')->where('archive','0')->get();
+			return View::make('createPdf',['completed_tasks' => $completed_tasks,'archived_tasks' => $archived_tasks,'pending_tasks' => $pending_tasks]);
+		}
+		else
+		{
+			$tasks = Task::where('user_id', Auth::user()->id)->where('completed','0')->where('archive','0')->get();
+		}
+		return View::make('tasks',['tasks' => $tasks]);
+	}
+
+
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Response
+	 */
+	public function create()
+	{
+		//
+	}
+
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 */
+	public function store()
+	{
+		$task = new Task;
+		$task->task = Request::get('task');
+		$task->priority = Request::get('priority');
+		$task->user_id = Auth::user()->id;
+	 
+		$task->save();
+		$tasks = Task::where('user_id', Auth::user()->id)->get();
+		return Response::json(array(
+		    'error' => false,
+		    'id' => $task->id),
+		    200
+		);
+	}
+
+
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function show($id)
+	{
+		$task = Task::where('user_id', Auth::user()->id)->where('id',$id)->get();
+		$comments = Comment::where('task_id',$id)->get();
+		return View::make('task',['task' => $task[0],'comments' => $comments]);
+	}
+
+
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function edit($id)
+	{
+		//
+	}
+
+
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function update($id)
+	{
+		if(Request::get('c'))
+		{
+			$task = Task::where('user_id', Auth::user()->id)->find($id);
+			$task->completed = Request::get('c');
+			$task->save();
+		}
+		else if(Request::get('a'))
+		{
+			$task = Task::where('user_id', Auth::user()->id)->find($id);
+			$task->archive = Request::get('a');
+			$task->save();
+		}
+		else
+		{
+		
+			$task = Task::where('user_id', Auth::user()->id)->find($id);
+			$task->task = Request::get('task');
+			$task->priority = Request::get('priority');
+			$task->completed = Request::get('completed');
+			$task->archive = Request::get('archive');
+			$task->save();
+		}
+
+		return Response::json(array(
+		    'error' => false,
+		    'id' => $id),
+		    200
+		);
+	}
+
+
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function destroy($id)
+	{
+		$task = Task::where('user_id', Auth::user()->id)->find($id);	 
+		$task->delete();
+		$comments = Comment::where('task_id', $id);
+		$comments->delete(); 
+
+		return Response::json(array(
+		    'error' => false,
+		    'id' => $id),
+		    200
+		    );
+	}
+
+
+}
