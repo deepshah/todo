@@ -12,7 +12,7 @@ return array(
     | Should be '*.apps.googleusercontent.com'
     |
     */
-    'clientId' =>     '313745484378-kbvr70rvona9k4uatk9glop4sbkoq3gq.apps.googleusercontent.com',
+    'clientId' =>     '',
 
     /*
     |--------------------------------------------------------------------------
@@ -30,7 +30,7 @@ return array(
     | your home page after a successful login
     |
     */
-    'redirectUri' => 'http://localhost/pb/todp/public/tasks',//URL::to('/') . '/', // URL:to('/') doesn't include the trailing slash
+    'redirectUri' => 'http://localhost/pb/todo/public/tasks',//URL::to('/') . '/', // URL:to('/') doesn't include the trailing slash
 
     /*
     |--------------------------------------------------------------------------

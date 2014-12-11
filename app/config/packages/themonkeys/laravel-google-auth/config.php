@@ -12,14 +12,14 @@ return array(
     | Should be '*.apps.googleusercontent.com'
     |
     */
-    'clientId' =>     '313745484378-kbvr70rvona9k4uatk9glop4sbkoq3gq.apps.googleusercontent.com',
+    'clientId' =>     '',
 
     /*
     |--------------------------------------------------------------------------
     | Google oauth2_client_secret
     |--------------------------------------------------------------------------
     */
-    'clientSecret' => 'eWgs6FmuMNViRlY1z0huDD0F',
+    'clientSecret' => '',
 
     /*
     |--------------------------------------------------------------------------
