@@ -1,38 +1,55 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap 101 Template</title>
 
-        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+	<base href="http://localhost/pb/todo/public/">
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 
-        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/main.css">
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
-        <script src="js/plugins.js"></script>
-        <script src="js/main.js"></script>
-        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
-		@yield('jquery')
-    </head>
-    <body>
-        <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
-        <!-- Add your site or application content here -->
-        @yield('content')
+	<style>
+		body { padding-top: 180px; }
+	</style>
 
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
-        <script src="js/plugins.js"></script>
-        <script src="js/main.js"></script>
-
-    </body>
+	@yield('jquery')
+  </head>
+  <body>
+	@yield('content')
+		<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		  <div class="container">
+			<div class="row page-header">
+			  <div class="col-md-9"><a href=""><h1>To Do</h1></a></div>
+				@if(Auth::check())
+			  <div class="col-md-2"><img class="img-circle" src="{{ Auth::user()->picture }}?sz=30" /> Hi, {{ Auth::user()->given_name }}!</div>
+			  <div class="col-md-1"><a href="logout">Logout</a></div>
+				@endif
+			</div>
+		  </div>
+		</nav>
+		@if(Auth::check())
+		<nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+		  <div class="container">
+			<ul class="nav nav-pills">
+			  <li role="presentation"><a href="">Home</a></li>
+			  <li role="presentation"><a href="tasks?c=true">Completed Tasks</a></li>
+			  <li role="presentation"><a href="archives">Archives</a></li>
+			  <li role="presentation"><a href="tasks?pdf=true">Create PDF</a></li>
+			</ul>
+		</nav>
+		@endif
+  </body>
 </html>

@@ -30,7 +30,7 @@ return array(
     | your home page after a successful login
     |
     */
-    'redirectUri' => 'http://localhost/pb/todo/public/tasks',//URL::to('/') . '/', // URL:to('/') doesn't include the trailing slash
+    'redirectUri' => 'http://localhost/pb/todo/public/authorize',//URL::to('/') . '/', // URL:to('/') doesn't include the trailing slash
 
     /*
     |--------------------------------------------------------------------------
@@ -80,6 +80,6 @@ return array(
     | "online" to request online access from the user.
     |
     */
-    'access_type' => 'offline',
+    'access_type' => 'online',
 
 );

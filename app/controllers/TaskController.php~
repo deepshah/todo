@@ -29,7 +29,7 @@ class TaskController extends \BaseController {
 			$completed_tasks = Task::where('user_id', Auth::user()->id)->where('completed','1')->get();
 			$archived_tasks = Task::where('user_id', Auth::user()->id)->where('archive','1')->get();
 			$pending_tasks = Task::where('user_id', Auth::user()->id)->where('completed','0')->where('archive','0')->get();
-			return View::make('completed',['completed_tasks' => $completed_tasks,'archived_tasks' => $archived_tasks,'pending_tasks' => $pending_tasks]);
+			return View::make('createPdf',['completed_tasks' => $completed_tasks,'archived_tasks' => $archived_tasks,'pending_tasks' => $pending_tasks]);
 		}
 		else
 		{
@@ -82,7 +82,7 @@ class TaskController extends \BaseController {
 	{
 		$task = Task::where('user_id', Auth::user()->id)->where('id',$id)->get();
 		$comments = Comment::where('task_id',$id)->get();
-		return View::make('task',['task' => $task[0],'comments' => $comments]);
+		return View::make('create',['task' => $task[0],'comments' => $comments]);
 	}
 
 

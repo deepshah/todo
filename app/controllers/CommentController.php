@@ -35,6 +35,7 @@ class CommentController extends \BaseController {
 		$comment->comment = Request::get('comment');
 		$comment->task_id = Request::get('task_id');
 		$comment->user_id = Auth::user()->id;
+		$comment->user_name = Auth::user()->name;
 		$comment->save();
 
 		$comment = Comment::where('id',$comment->id)->get()[0];
@@ -42,6 +43,7 @@ class CommentController extends \BaseController {
 		    'error' => false,
 		    'id' => $comment->id,
 			'user_id' => $comment->user_id,
+			'user_name' => $comment->user_name,
 			'comment' => $comment->comment,
 			'created_at' => $comment->created_at),
 		    200

@@ -31,4 +31,17 @@ Route::group(array('before' => array('google-finish-authentication', 'auth')), f
     Route::resource('/tasks', 'TaskController');
     Route::resource('/tasks/comments', 'CommentController');
     Route::get('/archives', 'ArchiveController@index');
+	Route::get('/authorize', function()
+	{
+		$user = User::find(Auth::user()->id);
+		if(!$user)
+		{
+			$user = new User;
+			$user->id = Auth::user()->id;
+			$user->name = Auth::user()->name;
+			$user->email = Auth::user()->email;
+			$user->save();
+		}
+		return Redirect::to('/tasks');
+	});
 });

@@ -34,9 +34,7 @@
 @stop
 
 @section('content')
-	<div>
-		<p>Hi, {{ Auth::user()->given_name }}</p>
-	</div>
+<div class="container-fluid">
 	<div>
 		{{ Form::open(['route' => 'tasks.index','method'=>'GET','id' => 'search']) }}
 			<span>
@@ -44,21 +42,22 @@
 				{{ Form::text('q') }}
 			</span>
 	
-			<span>{{ Form::submit('Search') }}</span>
+			<span>{{ Form::submit('Search',['class' => 'btn btn-default']) }}</span>
 		{{ Form::close() }}
 
 	</div>
+	<br />
 	<div>
-		<table id="tasks">
+		<table id="tasks" class="table table-striped">
 		@if($tasks->count())
 			<tr><th>Task</th><th>Priority</th><th>Delete</th><th>Archive</th></tr>
 			@foreach($tasks as $task)
-				<tr class="task" id="{{ $task->id }}" ><td class="editable"><a href="tasks/{{ $task->id }}">{{ $task->task }}</a></td><td>{{ $task->priority }}</td><td><button class="delete">Delete</button></td><td><button class="archive">Archive</button></td></tr>
+				<tr class="task" id="{{ $task->id }}" ><td class="editable"><a href="tasks/{{ $task->id }}">{{ $task->task }}</a></td><td>{{ $task->priority }}</td><td><button class="delete btn btn-default">Delete</button></td><td><button class="archive btn btn-default">Archive</button></td></tr>
 			@endforeach
 		@endif
 
 
 		</table>
 	</div>
-	<div><a href="archives">Archives</a></div>
+</div>
 @stop

@@ -54,7 +54,7 @@
 									$("#results").html("");
 									for(var i=0;i<data.tasks.length;i++)
 									{
-										var row = '<li><a href="tasks/'+data.tasks[i].id+'">'+data.tasks[i].task+'</a></li>';
+										var row = '<li class="list-group-item"><a href="tasks/'+data.tasks[i].id+'">'+data.tasks[i].task+'</a></li>';
 										$("#results").append(row);
 									}
 									$("#search-results").show();
@@ -77,7 +77,7 @@
 						        url : "tasks",
 						        data : dataString,
 						        success : function(data){
-									var row = '<tr class="task" id="'+data.id+'" ><td class="editable"><a href="tasks/'+data.id+'">'+task+'</a></td><td>'+priority+'</td><td><button class="complete">Completed</button></td><td><button class="delete">Delete</button></td><td><button class="archive">Archive</button></td></tr>'
+									var row = '<tr class="task" id="'+data.id+'" ><td class="editable"><a href="tasks/'+data.id+'">'+task+'</a></td><td>'+priority+'</td><td><button class="complete btn btn-default">Completed</button></td><td><button class="delete btn btn-default">Delete</button></td><td><button class="archive btn btn-default">Archive</button></td></tr>'
 									$("#tasks").append(row);
 						        }
 						    },"json");
@@ -90,6 +90,7 @@
 @stop
 
 @section('content')
+<div class="container-fluid">
 	<div>
 		<p>Hi, {{ Auth::user()->given_name }}</p>
 	</div>
@@ -101,34 +102,39 @@
 				{{ Form::text('q') }}
 			</span>
 	
-			<span>{{ Form::submit('Search') }}</span>
+			<span>{{ Form::submit('Search',['class' => 'btn btn-default']) }}</span>
 		{{ Form::close() }}
 		</div>
 		<div id="search-results" style="display:none">
 		<p>Results:</p>
 		<div id="results"></div>
+		<br />
 		</div>
 	</div>
+	<br />
 	<div>
-		<table id="tasks">
+		<table id="tasks" class="table table-striped">
 			<tr>
 			{{ Form::open(['route' => 'tasks.store','id' => 'new-task']) }}
-				<td>
+				<th>
 					{{ Form::label('task','Task') }}
 					{{ Form::text('task') }}
-				</td>
-				<td>
+				</th>
+				<th>
 					{{ Form::label('priority','Priority') }}
-					{{ Form::select('priority', array('Low' => 'Low', 'Medium' => 'Medium', 'High' => 'High'), 'Medium') }}
-				</td>
+					{{ Form::select('priority', array('Low' => 'Low', 'Medium' => 'Medium', 'High' => 'High'), 'Medium' ) }}
+				</th>
 		
-				<td>{{ Form::submit('Save') }}</td>
+				<th>{{ Form::submit('Save',['class' => 'btn btn-default']) }}</th>
+				<th></th>
+				<th></th>
 			{{ Form::close() }}
 			</tr>
 		@if($tasks->count())
+				<tr><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td></tr>
 				<tr><th>Task</th><th>Priority</th><th>Complete</th><th>Delete</th><th>Archive</th></tr>
 			@foreach($tasks as $task)
-				<tr class="task" id="{{ $task->id }}" ><td class="editable"><a href="tasks/{{ $task->id }}">{{ $task->task }}</a></td><td>{{ $task->priority }}</td><td><button class="complete">Completed</button></td><td><button class="delete">Delete</button></td><td><button class="archive">Archive</button></td></tr>
+				<tr class="task" id="{{ $task->id }}" ><td class="editable"><a href="tasks/{{ $task->id }}">{{ $task->task }}</a></td><td>{{ $task->priority }}</td><td><button class="complete btn btn-default">Completed</button></td><td><button class="delete btn btn-default">Delete</button></td><td><button class="archive btn btn-default">Archive</button></td></tr>
 			@endforeach
 
 		@else
@@ -137,7 +143,5 @@
 
 		</table>
 	</div>
-	<div><a href="archives">Archives</a></div>
-	<div><a href="tasks?c=true">Completed Tasks</a></div>
-	<div><a href="tasks?pdf=true">Create PDF</a></div>
+</div>
 @stop

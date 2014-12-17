@@ -29,7 +29,7 @@
 	<div>
 		<h1>Pending Tasks</h1>
 			<table>
-			".$p."
+			
 			</table>
 	</div>
 	<div>
@@ -47,7 +47,6 @@
 </page>";
 
 require_once('html2pdf/html2pdf.class.php');
-readfile("original.pdf");
 $html2pdf = new HTML2PDF('P','A4','en');
 $html2pdf->WriteHTML($content);
 $html2pdf->Output('tasks.pdf','D');
